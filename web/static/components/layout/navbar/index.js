@@ -522,7 +522,7 @@ export class LayoutNavbar extends CustomElement {
   constructor() {
     super();
     this.layout_gopage = "";
-    this.layout_appversion = "v2.9.0 6c0a642";
+    this.layout_appversion = "v2.8.3 e950041";
     this.layout_userpris = navbar_list.map((item) => (item.name));
     this._active_name = "";
     this._update_appversion = "";
