@@ -893,8 +893,8 @@
       } else {
         refresh_fail_count = refresh_fail_count + 1;
       }
-      if (refresh_fail_count < 10) {
-        setTimeout("refresh_process('"+type+"')", 2000);
+      if (refresh_fail_count < 15) {
+        setTimeout("refresh_process('"+type+"')", 500);
       }
     }, true, false);
   }
