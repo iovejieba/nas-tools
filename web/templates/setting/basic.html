@@ -155,6 +155,15 @@
                          autocomplete="off">
                 </div>
               </div>
+              <div class="col-lg">
+                <div class="mb-3">
+                  <label class="form-label required">文件系统类型</label>
+                  <select class="form-select" id="filesystem">
+                    <option value="auto" {% if Config.filesystem=='auto' %}selected{% endif %}>自动</option>
+                    <option value="net" {% if Config.filesystem=='net' %}selected{% endif %}>网络（CIFS）</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
           <div class="card-footer">

@@ -54,8 +54,7 @@ app:
   debug: true
 
 # 【配置文件系统类型】
-file_system:
-  set: "net"
+filesystem: 'net'
 
 # 【配置媒体库信息】
 media:
