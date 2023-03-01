@@ -298,7 +298,11 @@ class Sync(object):
                     else:
                         # 内部处理系统操作类型选择最优解
                         # observer = Observer(timeout=10)
-                        observer = PollingObserver(timeout=10)
+                        file_system = Config().get_config('file_system').get('set')
+                        if file_system == "net":
+                            observer = PollingObserver(timeout=10)
+                        else:
+                            observer = Observer(timeout=10)
                     self._observer.append(observer)
                     observer.schedule(FileMonitorHandler(monpath, self), path=monpath, recursive=True)
                     observer.setDaemon(True)

@@ -195,6 +195,13 @@ def update_config():
             login_password)
         overwrite_cofig = True
 
+    # 文件系统类型配置初始化
+    if not _config.get("file_system"):
+        _config['file_system']= {
+            'set': 'net'
+        }
+        overwrite_cofig = True
+
     # 实验室配置初始化
     if not _config.get("laboratory"):
         _config['laboratory'] = {

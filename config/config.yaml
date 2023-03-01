@@ -53,6 +53,10 @@ app:
   # Debug mode
   debug: true
 
+# 【配置文件系统类型】
+file_system:
+  set: "net"
+
 # 【配置媒体库信息】
 media:
   # 【媒体库管理软件】：emby、jellyfin、plex，需要在emby或jellyfin或plex区配置详细信息，用于下载检查控重、媒体库展示等，建议配置
