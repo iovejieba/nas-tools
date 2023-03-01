@@ -531,7 +531,7 @@ class SiteConf:
             "proxy": True,
             "language": "en"
         },
-        'btsow.quest': {
+        'btsow.mom': {
             "proxy": True
         },
         'www.hdpianyuan.com': {
