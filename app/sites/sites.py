@@ -402,8 +402,7 @@ class Sites:
         if status:
             self.message.send_site_signin_message(status)
 
-    @staticmethod
-    def __signin_site(site_info):
+    def __signin_site(self, site_info, retry=0):
         """
         签到一个站点
         """
@@ -475,7 +474,8 @@ class Sites:
                 # 访问链接
                 res = RequestUtils(cookies=site_cookie,
                                    headers=ua,
-                                   proxies=Config().get_proxies() if site_info.get("proxy") else None
+                                   proxies=Config().get_proxies() if site_info.get("proxy") else None,
+                                   timeout=60
                                    ).get_res(url=site_url)
                 if res and res.status_code == 200:
                     if not SiteHelper.is_logged_in(res.text):
@@ -489,6 +489,9 @@ class Sites:
                     return f"【{site}】{checkin_text}失败，状态码：{res.status_code}！"
                 else:
                     log.warn(f"【Sites】{site} {checkin_text}失败，无法打开网站")
+                    # 错误重试一次
+                    if retry == 0:
+                        return self.__signin_site(site_info, retry=1)
                     return f"【{site}】{checkin_text}失败，无法打开网站！"
         except Exception as e:
             log.error("【Sites】%s 签到出错：%s - %s" % (site, str(e), traceback.format_exc()))
