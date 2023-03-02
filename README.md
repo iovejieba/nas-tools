@@ -8,12 +8,11 @@
 [![Docker pulls](https://img.shields.io/docker/pulls/iceveil/nas-tools?style=plastic)](https://hub.docker.com/r/iceveil/nas-tools)
 [![Platform](https://img.shields.io/badge/platform-amd64/arm64-pink?style=plastic)](https://hub.docker.com/r/iceveil/nas-tools)
 
+```
+警告：项目仅作为个人使用，请谨慎获取
+```
 
 Docker：https://hub.docker.com/repository/docker/iceveil/nas-tools
-
-TG频道：https://t.me/nastool
-
-WIKI：https://github.com/iceveil/nas-tools/wiki
 
 API: http://localhost:3000/api/v1/
 
@@ -60,19 +59,6 @@ python3 -m pip install -r requirements.txt
 export NASTOOL_CONFIG="/xxx/config/config.yaml"
 nohup python3 run.py & 
 ```
-
-### 3、Windows
-下载exe文件，双击运行即可，会自动生成配置文件目录
-
-https://github.com/iceveil/nas-tools/releases
-
-### 4、群晖套件
-添加矿神群晖SPK套件源直接安装：
-
-https://spk.imnks.com/
-
-https://spk7.imnks.com/
-
 
 ## 配置
 ### 1、申请相关API KEY
@@ -224,11 +210,7 @@ https://spk7.imnks.com/
    docker exec -it nas-tools sh
    python3 /nas-tools/app/filetransfer.py -m link -s /from/path -d /to/path
    ```
-* 群晖套件版本，ssh到后台运行以下命令，同样修改配置文件路径以及源目录、目的目录参数。
-   ```
-   export NASTOOL_CONFIG=/var/packages/NASTool/target/config/config.yaml
-   /var/packages/py3k/target/usr/local/bin/python3 /var/packages/NASTool/target/app/filetransfer.py -m link -s /from/path -d /to/path
-   ```
+
 * 本地直接运行的，cd 到程序根目录，执行以下命令，修改配置文件、源目录和目的目录参数。
    ```
    export NASTOOL_CONFIG=config/config.yaml
