@@ -1,5 +1,6 @@
 import os.path
 import pickle
+import json
 
 from app.utils import StringUtils, ExceptionUtils
 from app.utils.commons import singleton
@@ -15,10 +16,8 @@ class IndexerHelper:
 
     def init_config(self):
         try:
-            with open(os.path.join(Config().get_inner_config_path(),
-                                   "sites.dat"),
-                      "rb") as f:
-                self._indexers = pickle.load(f)
+            with open(os.path.join(Config().get_inner_config_path(), "sites.json"), "r") as f:
+                self._indexers = json.loads(f.read())
         except Exception as err:
             ExceptionUtils.exception_traceback(err)
 
