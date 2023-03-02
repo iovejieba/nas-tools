@@ -171,7 +171,7 @@ class Scheduler:
                             log.info("豆瓣同步服务启动失败：%s" % str(e))
                             mediasync_interval = 0
                 if mediasync_interval:
-                    self.SCHEDULER.add_job(MediaServer().sync_mediaserver, 'interval', hours=mediasync_interval)
+                    self.SCHEDULER.add_job(MediaServer().sync_mediaserver, 'interval', minutes=mediasync_interval)
                     log.info("媒体库同步服务启动")
 
         # 元数据定时保存
