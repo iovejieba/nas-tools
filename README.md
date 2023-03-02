@@ -49,10 +49,14 @@ docker pull iceveil/nas-tools:latest
 ```
 教程见 [这里](docker/readme.md) 。
 
+注意：该docker镜像为私有镜像
+
 如无法连接Github，注意不要开启自动更新开关(NASTOOL_AUTO_UPDATE=false)，将NASTOOL_CN_UPDATE设置为true可使用国内源加速安装依赖。
 
 ### 2、本地运行
 python3.10版本，需要预安装cython，如发现缺少依赖包需额外安装
+
+此运行方法仅适用于开发调试，不适合生产环境
 ```
 git clone -b master https://github.com/iceveil/nas-tools --recurse-submodule 
 python3 -m pip install -r requirements.txt
