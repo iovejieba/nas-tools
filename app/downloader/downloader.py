@@ -394,7 +394,7 @@ class Downloader:
             tag = None
         return self.default_client.get_downloading_progress(tag=tag)
 
-    def get_torrents(self, torrent_ids):
+    def get_torrents(self, torrent_ids=None, sort=None, reverse=None, status=None):
         """
         根据ID或状态查询下载器中的种子信息
         :param torrent_ids: 种子ID列表
@@ -402,7 +402,7 @@ class Downloader:
         """
         if not self.default_client:
             return None, [], True
-        torrent_list, _ = self.default_client.get_torrents(ids=torrent_ids)
+        torrent_list, _ = self.default_client.get_torrents(ids=torrent_ids, sort=sort, reverse=reverse, status=status)
         return self._default_client_type, torrent_list
 
     def start_torrents(self, downloader=None, ids=None):

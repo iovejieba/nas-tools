@@ -2,6 +2,7 @@ import base64
 import datetime
 import importlib
 import json
+import time
 import os.path
 import re
 import shutil
@@ -63,6 +64,7 @@ class WebAction:
             "pt_stop": self.__pt_stop,
             "pt_remove": self.__pt_remove,
             "pt_info": self.__pt_info,
+            "all_pt_info": self.__all_pt_info,
             "del_unknown_path": self.__del_unknown_path,
             "rename": self.__rename,
             "rename_udf": self.__rename_udf,
@@ -597,6 +599,96 @@ class WebAction:
         if id:
             Downloader().delete_torrents(ids=tid, delete_file=True)
         return {"retcode": 0, "id": tid}
+
+    @staticmethod
+    def __all_pt_info(data):
+        # 字节换算单位
+        def hum_convert(value):
+            units = ["B", "KB", "MB", "GB", "TB", "PB"]
+            size = 1024.0
+            for i in range(len(units)):
+                if (value / size) < 1:
+                    return "%.2f%s" % (value, units[i])
+                value = value / size
+        """
+        查询已经完成的下载任务
+        """
+        client_type, torrents = Downloader().get_torrents()
+        
+        torrents_data = []
+
+        for torrent in torrents:
+            added_on = torrent.get('added_on')
+            dlspeed = torrent.get('dlspeed')
+            upspeed = torrent.get('upspeed')
+            total_size = torrent.get('total_size')
+            ratio = torrent.get('ratio')
+            state = torrent.get('state')
+            if state == "downloading":
+                state = "下载"
+            elif state == "stalledDL":
+                state = "下载"
+            elif state == "uploading":
+                state = "做种"
+            elif state == "stalledUP":
+                state = "做种"
+            elif state == "error":
+                state = "错误"
+            elif state == "pausedDL":
+                state = "暂停"
+            elif state == "pausedUP":
+                state = "暂停"
+            elif state == "missingFiles":
+                state = "丢失"
+            elif state == "checkingDL":
+                state = "检查中"
+            elif state == "checkingUP":
+                state = "检查中"
+            elif state == "checkingResumeData":
+                state = "检查中"
+            elif state == "forcedDL":
+                state = "强制下载"
+            elif state == "queuedDL":
+                state = "等待下载"
+            elif state == "forcedUP":
+                state = "强制上传"
+            elif state == "queuedUP":
+                state = "等待上传"
+            elif state == "allocating":
+                state = "分配磁盘空间"
+            elif state == "metaDL":
+                state = "获取元数据"
+            elif state == "moving":
+                state = "移动文件"
+            elif state == "unknown":
+                state = "未知"
+            else:
+                state = "未知"
+
+            torrent.update({
+                "added_on": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(added_on)),
+                "dlspeed": hum_convert(dlspeed),
+                "upspeed": hum_convert(upspeed),
+                "total_size": hum_convert(total_size),
+                "ratio": round(ratio, 2),
+                "state": state
+            })
+
+            torrent_data = {
+                "hash": torrent.get('hash'),
+                "state": torrent.get('state'),
+                "num_seeds": torrent.get('num_seeds'),
+                "num_complete": torrent.get('num_complete'),
+                "num_leechs": torrent.get('num_leechs'),
+                "num_incomplete": torrent.get('num_incomplete'),
+                "dlspeed": torrent.get('dlspeed'),
+                "upspeed": torrent.get('upspeed'),
+                "ratio": torrent.get('ratio')
+            }
+
+            torrents_data.append(torrent_data)
+
+        return {"retcode": 0, "torrents": torrents_data}
 
     @staticmethod
     def __pt_info(data):
@@ -3692,6 +3784,81 @@ class WebAction:
                 "title": title,
                 "image": poster_path or ""
             })
+        return {"code": 0, "result": torrents}
+    
+    @staticmethod
+    def get_download_fihished(data=None):
+        # 字节换算单位
+        def hum_convert(value):
+            units = ["B", "KB", "MB", "GB", "TB", "PB"]
+            size = 1024.0
+            for i in range(len(units)):
+                if (value / size) < 1:
+                    return "%.2f%s" % (value, units[i])
+                value = value / size
+        """
+        查询已经完成的下载任务
+        """
+        client_type, torrents = Downloader().get_torrents(sort=["added_on"], reverse=True, status=["completed", "stalled_uploading"])
+        
+        for torrent in torrents:
+            added_on = torrent.get('added_on')
+            dlspeed = torrent.get('dlspeed')
+            upspeed = torrent.get('upspeed')
+            total_size = torrent.get('total_size')
+            ratio = torrent.get('ratio')
+            state = torrent.get('state')
+            if state == "downloading":
+                state = "下载"
+            elif state == "stalledDL":
+                state = "下载"
+            elif state == "uploading":
+                state = "做种"
+            elif state == "stalledUP":
+                state = "做种"
+            elif state == "error":
+                state = "错误"
+            elif state == "pausedDL":
+                state = "暂停"
+            elif state == "pausedUP":
+                state = "暂停"
+            elif state == "missingFiles":
+                state = "丢失"
+            elif state == "checkingDL":
+                state = "检查中"
+            elif state == "checkingUP":
+                state = "检查中"
+            elif state == "checkingResumeData":
+                state = "检查中"
+            elif state == "forcedDL":
+                state = "强制下载"
+            elif state == "queuedDL":
+                state = "等待下载"
+            elif state == "forcedUP":
+                state = "强制上传"
+            elif state == "queuedUP":
+                state = "等待上传"
+            elif state == "allocating":
+                state = "分配磁盘空间"
+            elif state == "metaDL":
+                state = "获取元数据"
+            elif state == "moving":
+                state = "移动文件"
+            elif state == "unknown":
+                state = "未知"
+            else:
+                state = "未知"
+
+
+            torrent.update({
+                "added_on": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(added_on)),
+                "dlspeed": hum_convert(dlspeed),
+                "upspeed": hum_convert(upspeed),
+                "total_size": hum_convert(total_size),
+                "ratio": round(ratio, 2),
+                "state": state
+            })
+
         return {"code": 0, "result": torrents}
 
     def get_transfer_history(self, data):

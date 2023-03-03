@@ -88,7 +88,7 @@ class Qbittorrent(_IDownloadClient):
             ExceptionUtils.exception_traceback(err)
             return False
 
-    def get_torrents(self, ids=None, status=None, tag=None):
+    def get_torrents(self, ids=None, status=None, tag=None, sort=None, reverse=None):
         """
         获取种子列表
         return: 种子列表, 是否发生异常
@@ -96,7 +96,7 @@ class Qbittorrent(_IDownloadClient):
         if not self.qbc:
             return [], True
         try:
-            torrents = self.qbc.torrents_info(torrent_hashes=ids, status_filter=status, tag=tag)
+            torrents = self.qbc.torrents_info(torrent_hashes=ids, status_filter=status, tag=tag, sort=sort, reverse=reverse)
             if self.is_ver_less_4_4():
                 torrents = self.filter_torrent_by_tag(torrents, tag=tag)
             return torrents or [], False

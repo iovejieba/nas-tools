@@ -1,0 +1,120 @@
+{% import 'macro/svg.html' as SVG %}
+{% import 'macro/oops.html' as OOPS %}
+<div class="container-xl">
+  <!-- Page title -->
+  <div class="page-header d-print-none">
+    <div class="row align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          已完成下载
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+{% if DownloadCount > 0 %}
+  <div class="page-body">
+    <div class="container-xl">
+      <div class="row row-cards">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="table-responsive">
+              <table id="table" class="table table-vcenter card-table" style="font-size: 12px">
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>选定大小</th>
+                    <th>状态</th>
+                    <th>种子</th>
+                    <th>用户</th>
+                    <th>下载速度</th>
+                    <th>上传速度</th>
+                    <th>做种比率</th>
+                    <th>分类</th>
+                    <th>标签</th>
+                    <th>添加时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for Torrent in Torrents %}
+                  <tr>
+                    <td>
+                      {{ Torrent.name }}
+                    </td>
+                    <td class="text-muted">
+                      {{ Torrent.total_size}}
+                    </td>
+                    <td class="text-muted" id="state_{{ Torrent.hash }}">
+                      {{ Torrent.state}}
+                    </td>
+                    <td class="text-muted" id="seeds_{{ Torrent.hash }}">
+                      {{ Torrent.num_seeds }} ({{ Torrent.num_complete }})
+                    </td>
+                    <td class="text-muted" id="leechs_{{ Torrent.hash }}">
+                      {{ Torrent.num_leechs }} ({{ Torrent.num_incomplete }})
+                    </td>
+                    <td class="text-muted" id="dlspeed_{{ Torrent.hash }}">
+                      {{ Torrent.dlspeed }}/s
+                    </td>
+                    <td class="text-muted" id="upspeed_{{ Torrent.hash }}">
+                      {{ Torrent.upspeed }}/s
+                    </td>
+                    <td class="text-muted" id="ratio_{{ Torrent.hash }}">
+                      {{ Torrent.ratio }}
+                    </td>
+                    <td class="text-muted">
+                      {{ Torrent.category }}
+                    </td>
+                    <td class="text-muted">
+                      {{ Torrent.tags }}
+                    </td>
+                    <td>
+                      {{ Torrent.added_on }}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+{{ OOPS.nodatafound('没有已完成下载任务', '当前下载器中没有已完成下载的任务。') }}
+{% endif %}
+<script type="text/javascript">
+  //更新所有种子页面信息
+  function get_all_torrents_info() {
+    ajax_post("all_pt_info", {}, function (ret) {
+      if (ret.retcode == "0") {
+        for (let torrent of ret.torrents) {
+          update_torrent_ui(torrent);
+        }
+        setTimeout("get_all_torrents_info()", 2000);
+      }
+    }, true, false);
+  }
+
+  //更新单个种子的页面信息
+  function update_torrent_ui(info) {
+    var hash = info.hash;
+    var state = info.state;
+    var seeds = info.num_seeds + " (" + info.num_complete + ")";
+    var leechs = info.num_leechs + " (" + info.num_incomplete + ")";
+    var dlspeed = info.dlspeed + "/s";
+    var upspeed = info.upspeed + "/s";
+    var ratio = info.ratio;
+    $("#state_" + hash).html(state);
+    $("#seeds_" + hash).html(seeds);
+    $("#leechs_" + hash).html(leechs);
+    $("#dlspeed_" + hash).html(dlspeed);
+    $("#upspeed_" + hash).html(upspeed);
+    $("#ratio_" + hash).html(ratio);
+  }
+
+  //事件
+  setTimeout("get_all_torrents_info()", 2000);
+
+</script>

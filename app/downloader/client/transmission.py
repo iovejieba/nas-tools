@@ -72,7 +72,7 @@ class Transmission(_IDownloadClient):
     def get_status(self):
         return True if self.trc else False
 
-    def get_torrents(self, ids=None, status=None, tag=None):
+    def get_torrents(self, ids=None, status=None, tag=None, sort=None, reverse=None):
         """
         获取种子列表
         返回结果 种子列表, 是否有错误

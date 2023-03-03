@@ -505,6 +505,15 @@ def downloading():
                            Torrents=DispTorrents,
                            Client=Config().get_config("pt").get("pt_client"))
 
+# 已完成下载页面
+@App.route('/download_finished', methods=['POST', 'GET'])
+@login_required
+def download_finished():
+    DispTorrents = WebAction().get_download_fihished().get("result")
+    return render_template("download/download_finished.html",
+                           DownloadCount=len(DispTorrents),
+                           Torrents=DispTorrents,
+                           Client=Config().get_config("pt").get("pt_client"))
 
 # 近期下载页面
 @App.route('/downloaded', methods=['POST', 'GET'])
