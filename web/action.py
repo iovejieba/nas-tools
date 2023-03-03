@@ -3758,13 +3758,13 @@ class WebAction:
         """
         torrents = Downloader().get_downloading_progress()
         MediaHander = Media()
+        indexers = Indexer().get_builtin_indexers(check=False)
         for torrent in torrents:
             # 解析归宿平台
             indexer_name = "三方"
             client_type, torrent_info = Downloader().get_torrents(torrent_ids=torrent.get('id'))
             if len(torrent_info) > 0:
                 tracker = torrent_info[0].get("tracker")
-                indexers = Indexer().get_builtin_indexers(check=False)
                 for indexer in indexers:
                     indexer_domain = indexer.domain.split("/")[2]
                     if indexer_domain in tracker:
@@ -3817,7 +3817,8 @@ class WebAction:
         查询已经完成的下载任务
         """
         client_type, torrents = Downloader().get_torrents(sort="added_on", reverse=True, status="seeding")
-        
+
+        indexers = Indexer().get_builtin_indexers(check=False)
         for torrent in torrents:
             added_on = torrent.get('added_on')
             dlspeed = torrent.get('dlspeed')
@@ -3869,7 +3870,6 @@ class WebAction:
             # 解析归宿平台
             indexer_name = "三方"
             tracker = torrent.get("tracker")
-            indexers = Indexer().get_builtin_indexers(check=False)
             for indexer in indexers:
                 indexer_domain = indexer.domain.split("/")[2]
                 if indexer_domain in tracker:
