@@ -412,7 +412,7 @@ class SiteConf:
             'FREE': ["//h1[@id='top']/b/font[@class='free']"],
             '2XFREE': ["//h1[@id='top']/b/font[@class='twoupfree']"],
             'HR': [],
-            'PEER_COUNT': [],
+            'PEER_COUNT': ["//div[@id='peercount']/b[1]"],
         },
         'www.hd.ai': {
             'FREE': ["//img[@class='pro_free']"],
