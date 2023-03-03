@@ -3759,6 +3759,21 @@ class WebAction:
         torrents = Downloader().get_downloading_progress()
         MediaHander = Media()
         for torrent in torrents:
+            # 解析归宿平台
+            indexer_name = "三方"
+            client_type, torrent_info = Downloader().get_torrents(torrent_ids=torrent.get('id'))
+            if len(torrent_info) > 0:
+                tracker = torrent_info[0].get("tracker")
+                indexers = Indexer().get_builtin_indexers(check=False)
+                for indexer in indexers:
+                    indexer_domain = indexer.domain.split("/")[2]
+                    if indexer_domain in tracker:
+                        indexer_name = indexer.name
+                        break
+            torrent.update({
+                "indexer_name": indexer_name
+            })
+
             # 识别
             name = torrent.get("name")
             media_info = MediaHander.get_media_info(title=name)
@@ -3780,9 +3795,11 @@ class WebAction:
                 title = "%s %s" % (media_info.get_title_string(
                 ), media_info.get_season_episode_string())
             poster_path = media_info.get_poster_image()
+
             torrent.update({
                 "title": title,
-                "image": poster_path or ""
+                "image": poster_path or "",
+                "indexer_name": indexer_name
             })
         return {"code": 0, "result": torrents}
     
