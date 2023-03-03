@@ -409,8 +409,8 @@ class SiteConf:
             'PEER_COUNT': [],
         },
         'ptchina.org': {
-            'FREE': ["//h1[@id='top']/b/b/font[@class='free']"],
-            '2XFREE': ["//h1[@id='top']/b/b/font[@class='twoupfree']"],
+            'FREE': ["//h1[@id='top']/b/font[@class='free']"],
+            '2XFREE': ["//h1[@id='top']/b/font[@class='twoupfree']"],
             'HR': [],
             'PEER_COUNT': [],
         },
