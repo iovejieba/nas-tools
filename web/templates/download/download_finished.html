@@ -23,6 +23,7 @@
                 <thead>
                   <tr>
                     <th>名称</th>
+                    <th>平台</th>
                     <th>选定大小</th>
                     <th>状态</th>
                     <th>种子</th>
@@ -40,6 +41,9 @@
                   <tr>
                     <td>
                       {{ Torrent.name }}
+                    </td>
+                    <td class="text-muted">
+                      {{ Torrent.indexer_name}}
                     </td>
                     <td class="text-muted">
                       {{ Torrent.total_size}}

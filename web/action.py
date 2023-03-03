@@ -3866,6 +3866,15 @@ class WebAction:
             else:
                 state = "未知"
 
+            # 解析归宿平台
+            indexer_name = "三方"
+            tracker = torrent.get("tracker")
+            indexers = Indexer().get_builtin_indexers(check=False)
+            for indexer in indexers:
+                indexer_domain = indexer.domain.split("/")[2]
+                if indexer_domain in tracker:
+                    indexer_name = indexer.name
+                    break
 
             torrent.update({
                 "added_on": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(added_on)),
@@ -3873,7 +3882,8 @@ class WebAction:
                 "upspeed": hum_convert(upspeed),
                 "total_size": hum_convert(total_size),
                 "ratio": round(ratio, 2),
-                "state": state
+                "state": state,
+                "indexer_name": indexer_name
             })
 
         return {"code": 0, "result": torrents}
