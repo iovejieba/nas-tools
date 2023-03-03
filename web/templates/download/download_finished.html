@@ -6,7 +6,7 @@
     <div class="row align-items-center">
       <div class="col">
         <h2 class="page-title">
-          已完成下载
+          已完成下载 (总上传：<span id="total_upspeed">0KB/s</span>)
         </h2>
       </div>
     </div>
@@ -96,6 +96,7 @@
         for (let torrent of ret.torrents) {
           update_torrent_ui(torrent);
         }
+        $("#total_upspeed").html(ret.total_upspeed + "/s");
         setTimeout("get_all_torrents_info()", 2000);
       }
     }, true, false);

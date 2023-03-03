@@ -616,6 +616,7 @@ class WebAction:
         client_type, torrents = Downloader().get_torrents()
         
         torrents_data = []
+        total_upspeed = 0
 
         for torrent in torrents:
             added_on = torrent.get('added_on')
@@ -686,9 +687,13 @@ class WebAction:
                 "ratio": torrent.get('ratio')
             }
 
-            torrents_data.append(torrent_data)
+            total_upspeed += upspeed
 
-        return {"retcode": 0, "torrents": torrents_data}
+            torrents_data.append(torrent_data)
+        
+        total_upspeed = hum_convert(total_upspeed)
+
+        return {"retcode": 0, "torrents": torrents_data, "total_upspeed": total_upspeed}
 
     @staticmethod
     def __pt_info(data):
