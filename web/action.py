@@ -3799,7 +3799,7 @@ class WebAction:
         """
         查询已经完成的下载任务
         """
-        client_type, torrents = Downloader().get_torrents(sort=["added_on"], reverse=True, status=["completed", "stalled_uploading"])
+        client_type, torrents = Downloader().get_torrents(sort="added_on", reverse=True, status="seeding")
         
         for torrent in torrents:
             added_on = torrent.get('added_on')
