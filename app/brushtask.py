@@ -193,7 +193,7 @@ class BrushTask(object):
             log.info("【Brush】%s RSS获取数据：%s" % (site_name, len(rss_result)))
 
         max_dlcount = rss_rule.get("dlcount")
-        downloading_count = self.__get_downloading_count(downloader_cfg)
+        downloading_count = self.__get_downloading_count(downloader_cfg, taskid)
         new_toreent_count = int(max_dlcount) - int(downloading_count)
         success_count = 0
         for res in rss_result:
@@ -502,7 +502,7 @@ class BrushTask(object):
                 return False
         # 检查正在下载的任务数
         if dlcount:
-            downloading_count = self.__get_downloading_count(downloadercfg)
+            downloading_count = self.__get_downloading_count(downloadercfg, taskid)
             if downloading_count is None:
                 log.error("【Brush】任务 %s 下载器 %s 无法连接" % (taskname, downloadercfg.get("name")))
                 return False
@@ -546,7 +546,7 @@ class BrushTask(object):
         else:
             return self._downloader_infos
 
-    def __get_downloading_count(self, downloadercfg):
+    def __get_downloading_count(self, downloadercfg, taskid):
         """
         查询当前正在下载的任务数
         """
@@ -556,14 +556,14 @@ class BrushTask(object):
             downloader = Qbittorrent(config=downloadercfg)
             if not downloader.qbc:
                 return None
-            dlitems = downloader.get_downloading_torrents()
+            dlitems = downloader.get_downloading_torrents(tag="TASK_%s" % taskid)
             if dlitems is not None:
                 return int(len(dlitems))
         else:
             downloader = Transmission(config=downloadercfg)
             if not downloader.trc:
                 return None
-            dlitems = downloader.get_downloading_torrents()
+            dlitems = downloader.get_downloading_torrents(tag="TASK_%s" % taskid)
             if dlitems is not None:
                 return int(len(dlitems))
         return None
@@ -620,7 +620,12 @@ class BrushTask(object):
                 if tag:
                     tags = [tag, torrent_tag]
                 else:
-                    tags = torrent_tag
+                    tags = [torrent_tag]
+                
+                # 添加任务ID标签
+                tag_task_id = "TASK_"+taskid
+                tags.append(tag_task_id)
+
                 ret = downloader.add_torrent(content=content,
                                              tag=tags,
                                              download_dir=downloadercfg.get("save_dir"),
