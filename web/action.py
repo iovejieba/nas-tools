@@ -715,7 +715,7 @@ class WebAction:
                     speed = "%s%sB/s %s%sB/s %s" % (chr(8595),
                                                     dlspeed, chr(8593), upspeed, eta)
                 # 进度
-                progress = round(torrent.get('progress') * 100)
+                progress = round(torrent.get('progress') * 100, 1)
                 # 主键
                 key = torrent.get('hash')
             elif Client == DownloaderType.Client115:
