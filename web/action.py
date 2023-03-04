@@ -619,12 +619,16 @@ class WebAction:
         total_upspeed = 0
 
         for torrent in torrents:
-            added_on = torrent.get('added_on')
+            hash = torrent.get('hash')
             dlspeed = torrent.get('dlspeed')
             upspeed = torrent.get('upspeed')
-            total_size = torrent.get('total_size')
             ratio = torrent.get('ratio')
             state = torrent.get('state')
+            num_seeds = torrent.get('num_seeds')
+            num_complete = torrent.get('num_complete')
+            num_leechs = torrent.get('num_leechs')
+            num_incomplete = torrent.get('num_incomplete')
+
             if state == "downloading":
                 state = "下载"
             elif state == "stalledDL":
@@ -666,25 +670,18 @@ class WebAction:
             else:
                 state = "未知"
 
-            torrent.update({
-                "added_on": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(added_on)),
-                "dlspeed": hum_convert(dlspeed),
-                "upspeed": hum_convert(upspeed),
-                "total_size": hum_convert(total_size),
-                "ratio": round(ratio, 2),
-                "state": state
-            })
-
             torrent_data = {
-                "hash": torrent.get('hash'),
-                "state": torrent.get('state'),
-                "num_seeds": torrent.get('num_seeds'),
-                "num_complete": torrent.get('num_complete'),
-                "num_leechs": torrent.get('num_leechs'),
-                "num_incomplete": torrent.get('num_incomplete'),
-                "dlspeed": torrent.get('dlspeed'),
-                "upspeed": torrent.get('upspeed'),
-                "ratio": torrent.get('ratio')
+                "hash": hash,
+                "state": state,
+                "num_seeds": num_seeds,
+                "num_complete": num_complete,
+                "num_leechs": num_leechs,
+                "num_incomplete": num_incomplete,
+                "dlspeed": hum_convert(dlspeed),
+                "dlspeed_unconvert": dlspeed,
+                "upspeed": hum_convert(upspeed),
+                "upspeed_unconvert": upspeed,
+                "ratio": round(ratio, 2)
             }
 
             total_upspeed += upspeed
@@ -3884,8 +3881,11 @@ class WebAction:
             torrent.update({
                 "added_on": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(added_on)),
                 "dlspeed": hum_convert(dlspeed),
+                "dlspeed_unconvert": dlspeed,
                 "upspeed": hum_convert(upspeed),
+                "upspeed_unconvert": upspeed,
                 "total_size": hum_convert(total_size),
+                "total_size_unconvert": total_size,
                 "ratio": round(ratio, 2),
                 "state": state,
                 "indexer_name": indexer_name

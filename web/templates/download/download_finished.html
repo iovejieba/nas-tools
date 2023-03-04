@@ -13,82 +13,91 @@
   </div>
 </div>
 {% if DownloadCount > 0 %}
-  <div class="page-body">
-    <div class="container-xl">
-      <div class="row row-cards">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="table-responsive">
-              <table id="table" class="table table-vcenter card-table" style="font-size: 12px">
-                <thead>
-                  <tr>
-                    <th>名称</th>
-                    <th>平台</th>
-                    <th>选定大小</th>
-                    <th>状态</th>
-                    <th>种子</th>
-                    <th>用户</th>
-                    <th>下载速度</th>
-                    <th>上传速度</th>
-                    <th>做种比率</th>
-                    <th>分类</th>
-                    <th>标签</th>
-                    <th>添加时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for Torrent in Torrents %}
-                  <tr>
-                    <td>
-                      {{ Torrent.name }}
-                    </td>
-                    <td class="text-muted">
-                      {{ Torrent.indexer_name}}
-                    </td>
-                    <td class="text-muted">
-                      {{ Torrent.total_size}}
-                    </td>
-                    <td class="text-muted" id="state_{{ Torrent.hash }}">
-                      {{ Torrent.state}}
-                    </td>
-                    <td class="text-muted" id="seeds_{{ Torrent.hash }}">
-                      {{ Torrent.num_seeds }} ({{ Torrent.num_complete }})
-                    </td>
-                    <td class="text-muted" id="leechs_{{ Torrent.hash }}">
-                      {{ Torrent.num_leechs }} ({{ Torrent.num_incomplete }})
-                    </td>
-                    <td class="text-muted" id="dlspeed_{{ Torrent.hash }}">
-                      {{ Torrent.dlspeed }}/s
-                    </td>
-                    <td class="text-muted" id="upspeed_{{ Torrent.hash }}">
-                      {{ Torrent.upspeed }}/s
-                    </td>
-                    <td class="text-muted" id="ratio_{{ Torrent.hash }}">
-                      {{ Torrent.ratio }}
-                    </td>
-                    <td class="text-muted">
-                      {{ Torrent.category }}
-                    </td>
-                    <td class="text-muted">
-                      {{ Torrent.tags }}
-                    </td>
-                    <td>
-                      {{ Torrent.added_on }}
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="table-responsive">
+            <table id="table" class="table table-vcenter card-table fs-5">
+              <thead>
+                <tr>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-name">名称</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-indexer_name">平台</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-total_size">大小</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-state">状态</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-seeds">种子</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-leechs">用户</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-dlspeed">下载速度</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-upspeed">上传速度</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-ratio">做种比率</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-category">分类</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-tags">标签</button></th>
+                  <th class="text-nowrap"><button class="table-sort" data-sort="sort-added_on">添加时间</button></th>
+                </tr>
+              </thead>
+              <tbody class="table-tbody">
+                {% for Torrent in Torrents %}
+                <tr>
+                  <td class="sort-name">
+                    {{ Torrent.name }}
+                  </td>
+                  <td class="text-muted sort-indexer_name">
+                    {{ Torrent.indexer_name}}
+                  </td>
+                  <td class="text-muted sort-total_size" data-total_size="{{ Torrent.total_size_unconvert }}">
+                    {{ Torrent.total_size}}
+                  </td>
+                  <td class="text-muted sort-state" id="state_{{ Torrent.hash }}">
+                    {{ Torrent.state}}
+                  </td>
+                  <td class="text-muted sort-seeds" data-seeds="{{ Torrent.num_seeds }}" id="seeds_{{ Torrent.hash }}">
+                    {{ Torrent.num_seeds }} ({{ Torrent.num_complete }})
+                  </td>
+                  <td class="text-muted sort-leechs" data-leechs="{{ Torrent.num_leechs }}"
+                    id="leechs_{{ Torrent.hash }}">
+                    {{ Torrent.num_leechs }} ({{ Torrent.num_incomplete }})
+                  </td>
+                  <td class="text-muted sort-dlspeed" data-dlspeed="{{ Torrent.dlspeed_unconvert }}"
+                    id="dlspeed_{{ Torrent.hash }}">
+                    {{ Torrent.dlspeed }}/s
+                  </td>
+                  <td class="text-muted sort-upspeed" data-upspeed="{{ Torrent.upspeed_unconvert }}"
+                    id="upspeed_{{ Torrent.hash }}">
+                    {{ Torrent.upspeed }}/s
+                  </td>
+                  <td class="text-muted sort-ratio" id="ratio_{{ Torrent.hash }}">
+                    {{ Torrent.ratio }}
+                  </td>
+                  <td class="text-muted sort-category">
+                    {{ Torrent.category }}
+                  </td>
+                  <td class="text-muted sort-tags">
+                    {{ Torrent.tags }}
+                  </td>
+                  <td class="sort-added_on">
+                    {{ Torrent.added_on }}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 {% else %}
 {{ OOPS.nodatafound('没有已完成下载任务', '当前下载器中没有已完成下载的任务。') }}
 {% endif %}
 <script type="text/javascript">
+  var tableDataList = new List('table', {
+    sortClass: 'table-sort',
+    listClass: 'table-tbody',
+    valueNames: ['sort-name', 'sort-indexer_name', { name: 'sort-total_size', attr: 'data-total_size' }, 'sort-state', { name: 'sort-seeds', attr: 'data-seeds' }, { name: 'sort-leechs', attr: 'data-leechs' }, { name: 'sort-dlspeed', attr: 'data-dlspeed' }, { name: 'sort-upspeed', attr: 'data-upspeed' }, 'sort-ratio', 'sort-category', 'sort-tags', 'sort-added_on']
+  });
+
   //更新所有种子页面信息
   function get_all_torrents_info() {
     ajax_post("all_pt_info", {}, function (ret) {
@@ -96,6 +105,18 @@
         for (let torrent of ret.torrents) {
           update_torrent_ui(torrent);
         }
+
+        tableDataList.reIndex()
+
+        let sort_desc = $(".table-sort.desc").attr('data-sort')
+        let sort_asc = $(".table-sort.asc").attr('data-sort')
+
+        if (sort_desc) {
+          tableDataList.sort(sort_desc, { order: "desc" })
+        } else if (sort_asc) {
+          tableDataList.sort(sort_asc, { order: "asc" })
+        }
+
         $("#total_upspeed").html(ret.total_upspeed + "/s");
         setTimeout("get_all_torrents_info()", 2000);
       }
@@ -113,9 +134,13 @@
     var ratio = info.ratio;
     $("#state_" + hash).html(state);
     $("#seeds_" + hash).html(seeds);
+    $("#seed_" + hash).attr("data-seeds", info.num_seeds)
     $("#leechs_" + hash).html(leechs);
+    $("#leech_" + hash).attr("data-leechs", info.num_leechs)
     $("#dlspeed_" + hash).html(dlspeed);
+    $("#dlspeed_" + hash).attr("data-dlspeed", info.dlspeed_unconvert)
     $("#upspeed_" + hash).html(upspeed);
+    $("#upspeed_" + hash).attr("data-upspeed", info.upspeed_unconvert);
     $("#ratio_" + hash).html(ratio);
   }
 
@@ -123,3 +148,11 @@
   setTimeout("get_all_torrents_info()", 2000);
 
 </script>
+<style>
+  /*
+  * 修复列表排序按钮样式
+  */
+  .table-sort {
+    width: auto;
+  }
+</style>
