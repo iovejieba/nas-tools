@@ -11,3 +11,7 @@ test.py
 *.ipr
 out/
 gen/
+
+### Config Files ###
+media.db
+user.db
