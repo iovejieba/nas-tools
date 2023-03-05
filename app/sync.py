@@ -120,6 +120,24 @@ class Sync(object):
             return []
         return [os.path.normpath(key) for key in self.sync_dir_config.keys()]
     
+    def is_dir_path_synced(self, dir_path):
+        """
+        判断目录是否已同步
+        """
+        is_synced = True
+        if not dir_path:
+            return False
+        file_list = os.listdir(dir_path)
+        try:
+            lock.acquire()
+            for file in file_list:
+                file_path = os.path.join(dir_path, file)
+                if file_path not in self._synced_files:
+                    is_synced = False
+        finally:
+            lock.release()
+        return is_synced
+    
     def set_tags_by_dir_path(self, dir_path):
         """
         根据文件夹名称，找到对应的下载任务，并设置标签
@@ -302,6 +320,10 @@ class Sync(object):
                                                                     root_path=is_root_path)
                     if not ret:
                         log.warn("【Sync】%s转移失败：%s" % (path, ret_msg))
+                    else:
+                        if self.is_dir_path_synced(src_path):
+                            log.info("【Sync】%s 全部转移完成" % src_path)
+                            self.set_tags_by_dir_path(src_path)
                 self._need_sync_paths.pop(path)
         finally:
             lock.release()
