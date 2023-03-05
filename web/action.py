@@ -3762,9 +3762,11 @@ class WebAction:
         MediaHander = Media()
         indexers = Indexer().get_builtin_indexers(check=False)
         for torrent in torrents:
+            # 获取下载任务详情
+            client_type, torrent_info = Downloader().get_torrents(torrent_ids=torrent.get('id'))
+
             # 解析归宿平台
             indexer_name = "三方"
-            client_type, torrent_info = Downloader().get_torrents(torrent_ids=torrent.get('id'))
             if len(torrent_info) > 0:
                 tracker = torrent_info[0].get("tracker")
                 for indexer in indexers:
@@ -3774,6 +3776,15 @@ class WebAction:
                         break
             torrent.update({
                 "indexer_name": indexer_name
+            })
+
+            # 验证下载是否为刷流任务
+            is_brushtask = False
+            if len(torrent_info) > 0:
+                if re.search("^(TASK_)[0-9]+(,\ 已整理)$", torrent_info[0].get("tags")) or torrent_info[0].get("tags") == "已整理":
+                    is_brushtask = True
+            torrent.update({
+                "is_brushtask": is_brushtask
             })
 
             # 识别

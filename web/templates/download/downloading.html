@@ -53,7 +53,7 @@
                 {{ Torrent.speed }}
               </div>
               <div class="text-muted mt-1">
-                {{ Torrent.indexer_name }} ({% if Torrent.tags == "已整理" %} 刷流 {% else %} 下载 {% endif %})
+                {{ Torrent.indexer_name }} ({% if Torrent.is_brushtask %} 刷流 {% else %} 下载 {% endif %})
               </div>
               {% if not Torrent.noprogress %}
               <div class="mt-3">
