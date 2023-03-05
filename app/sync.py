@@ -127,15 +127,13 @@ class Sync(object):
         is_synced = True
         if not dir_path:
             return False
+        
         file_list = os.listdir(dir_path)
-        try:
-            lock.acquire()
-            for file in file_list:
-                file_path = os.path.join(dir_path, file)
-                if file_path not in self._synced_files:
-                    is_synced = False
-        finally:
-            lock.release()
+        for file in file_list:
+            file_path = os.path.join(dir_path, file)
+            if file_path not in self._synced_files:
+                is_synced = False
+
         return is_synced
     
     def set_tags_by_dir_path(self, dir_path):
