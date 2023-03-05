@@ -623,7 +623,7 @@ class BrushTask(object):
                     tags = [torrent_tag]
                 
                 # 添加任务ID标签
-                tag_task_id = "TASK_"+taskid
+                tag_task_id = "TASK_" + str(taskid)
                 tags.append(tag_task_id)
 
                 ret = downloader.add_torrent(content=content,
