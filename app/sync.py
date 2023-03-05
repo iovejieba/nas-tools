@@ -161,7 +161,7 @@ class Sync(object):
         # 设置标签
         for task in task_data:
             Downloader().default_client.set_torrents_status(task.get("hash"), tags=task.get("tags"))
-            log.info("【Sync】下载任务 %s - %s 设置标签：已整理" % (task.get("hash"), dir_path))
+            log.info("【Sync】下载任务 %s - %s 已完成下载并全部转移完成，设置标签：已整理" % (task.get("hash"), dir_path))
 
     def file_change_handler(self, event, text, event_path):
         """
@@ -262,7 +262,6 @@ class Sync(object):
                         if not ret:
                             log.warn("【Sync】%s 转移失败：%s" % (event_path, ret_msg))
                         else:
-                            log.info("【Sync】%s 转移完成" % event_path)
                             self.set_tags_by_dir_path(event_path)
                     else:
                         try:
@@ -329,7 +328,6 @@ class Sync(object):
                         log.warn("【Sync】%s转移失败：%s" % (path, ret_msg))
                     else:
                         if self.is_dir_path_synced(src_path):
-                            log.info("【Sync】%s 全部转移完成" % src_path)
                             self.set_tags_by_dir_path(src_path)
                         else:
                             log.info("【Sync】%s 部分转移完成" % src_path)
@@ -413,7 +411,6 @@ class Sync(object):
                         log.error("【Sync】%s 处理失败：%s" % (monpath, ret_msg))
                     else:
                         if self.is_dir_path_synced(path):
-                            log.info("【Sync】%s 全部转移完成" % path)
                             self.set_tags_by_dir_path(path)
                         else:
                             log.info("【Sync】%s 部分转移完成" % path)
