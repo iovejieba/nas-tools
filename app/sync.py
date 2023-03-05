@@ -139,6 +139,7 @@ class Sync(object):
                 if ext.lower() not in RMT_MEDIAEXT:
                     continue
             if file_path not in self._synced_files:
+                log.info("【Sync】分析目录 %s 是否已经完整同步时发现 %s 未同步" % (dir_path, file_path))
                 is_synced = False
 
         return is_synced
