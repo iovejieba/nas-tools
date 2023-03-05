@@ -510,9 +510,35 @@ def downloading():
 @login_required
 def download_finished():
     DispTorrents = WebAction().get_download_fihished().get("result")
+    filter_indexer_name = []
+    filter_state = []
+    filter_category = []
+    filter_tags = []
+    for torrent in DispTorrents:
+        if torrent.get('indexer_name') not in filter_indexer_name:
+            filter_indexer_name.append(torrent.get('indexer_name'))
+        if torrent.get('state') not in filter_state:
+            filter_state.append(torrent.get('state'))
+        categorys = torrent.get('category')
+        categorys = categorys.split(",")
+        for category in categorys:
+            category = category.replace(" ", "")
+            if category not in filter_category and category:
+                filter_category.append(category)
+        tags = torrent.get('tags')
+        tags = tags.split(",")
+        for tag in tags:
+            tag = tag.replace(" ", "")
+            if tag not in filter_tags and tag:
+                filter_tags.append(tag)
+
     return render_template("download/download_finished.html",
                            DownloadCount=len(DispTorrents),
                            Torrents=DispTorrents,
+                           FilterIndexerName=filter_indexer_name,
+                           FilterState=filter_state,
+                           FilterCategory=filter_category,
+                           FilterTags=filter_tags,
                            Client=Config().get_config("pt").get("pt_client"))
 
 # 近期下载页面

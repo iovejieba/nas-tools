@@ -16,7 +16,70 @@
 <div class="page-body">
   <div class="container-xl">
     <div class="row row-cards">
-      <div class="col-lg-12">
+      <div class="col-lg-2 d-none d-sm-block">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">筛选</h5>
+            <div class="d-md-block" id="search_results_filter_123">
+              <!-- 过滤条件 -->
+              {% if FilterIndexerName %}
+              <div class="subheader mb-2 mt-2">平台</div>
+              <div class="form-selectgroup form-selectgroup-pills">
+                {% for IndexerName in FilterIndexerName %}
+                <label class="form-selectgroup-item">
+                  <input type="checkbox" name="filter_indexer_name" value="{{ IndexerName }}"
+                    class="form-selectgroup-input" onclick="filter_torrents(this)">
+                  <span class="form-selectgroup-label">{{ IndexerName }}</span>
+                </label>
+                {% endfor %}
+              </div>
+              {% endif %}
+              {% if FilterCategory %}
+              <div class="subheader mb-2 mt-2">分类</div>
+              <div class="form-selectgroup form-selectgroup-pills">
+                {% for Category in FilterCategory %}
+                <label class="form-selectgroup-item">
+                  <input type="checkbox" name="filter_category" value="{{ Category }}" class="form-selectgroup-input"
+                    onclick="filter_torrents(this)">
+                  <span class="form-selectgroup-label">{{ Category }}</span>
+                </label>
+                {% endfor %}
+              </div>
+              {% endif %}
+              {% if FilterTags %}
+              <div class="subheader mb-2 mt-2">标签</div>
+              <div class="form-selectgroup form-selectgroup-pills">
+                {% for Tag in FilterTags %}
+                <label class="form-selectgroup-item">
+                  <input type="checkbox" name="filter_tags" value="{{ Tag }}" class="form-selectgroup-input"
+                    onclick="filter_torrents(this)">
+                  <span class="form-selectgroup-label">{{ Tag }}</span>
+                </label>
+                {% endfor %}
+              </div>
+              {% endif %}
+              {% if FilterState %}
+              <div class="subheader mb-2 mt-2">状态</div>
+              <div class="form-selectgroup form-selectgroup-pills">
+                {% for State in FilterState %}
+                <label class="form-selectgroup-item">
+                  <input type="checkbox" name="filter_state" value="{{ State }}" class="form-selectgroup-input"
+                    onclick="filter_torrents(this)">
+                  <span class="form-selectgroup-label">{{ State }}</span>
+                </label>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <div class="mt-5">
+                <button class="btn w-100" onclick="reset_filter()">
+                  重置
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-10">
         <div class="card">
           <div class="table-responsive">
             <table id="table" class="table table-vcenter card-table fs-5">
@@ -39,43 +102,45 @@
               <tbody class="table-tbody">
                 {% for Torrent in Torrents %}
                 <tr>
-                  <td class="sort-name">
+                  <td class="sort-name text-nowrap">
                     {{ Torrent.name }}
                   </td>
-                  <td class="text-muted sort-indexer_name">
+                  <td class="text-muted sort-indexer_name text-nowrap">
                     {{ Torrent.indexer_name}}
                   </td>
-                  <td class="text-muted sort-total_size" data-total_size="{{ Torrent.total_size_unconvert }}">
+                  <td class="text-muted sort-total_size text-nowrap"
+                    data-total_size="{{ Torrent.total_size_unconvert }}">
                     {{ Torrent.total_size}}
                   </td>
-                  <td class="text-muted sort-state" id="state_{{ Torrent.hash }}">
+                  <td class="text-muted sort-state text-nowrap" id="state_{{ Torrent.hash }}">
                     {{ Torrent.state}}
                   </td>
-                  <td class="text-muted sort-seeds" data-seeds="{{ Torrent.num_seeds }}" id="seeds_{{ Torrent.hash }}">
+                  <td class="text-muted sort-seeds text-nowrap" data-seeds="{{ Torrent.num_seeds }}"
+                    id="seeds_{{ Torrent.hash }}">
                     {{ Torrent.num_seeds }} ({{ Torrent.num_complete }})
                   </td>
-                  <td class="text-muted sort-leechs" data-leechs="{{ Torrent.num_leechs }}"
+                  <td class="text-muted sort-leechs text-nowrap" data-leechs="{{ Torrent.num_leechs }}"
                     id="leechs_{{ Torrent.hash }}">
                     {{ Torrent.num_leechs }} ({{ Torrent.num_incomplete }})
                   </td>
-                  <td class="text-muted sort-dlspeed" data-dlspeed="{{ Torrent.dlspeed_unconvert }}"
+                  <td class="text-muted sort-dlspeed text-nowrap" data-dlspeed="{{ Torrent.dlspeed_unconvert }}"
                     id="dlspeed_{{ Torrent.hash }}">
                     {{ Torrent.dlspeed }}/s
                   </td>
-                  <td class="text-muted sort-upspeed" data-upspeed="{{ Torrent.upspeed_unconvert }}"
+                  <td class="text-muted sort-upspeed text-nowrap" data-upspeed="{{ Torrent.upspeed_unconvert }}"
                     id="upspeed_{{ Torrent.hash }}">
                     {{ Torrent.upspeed }}/s
                   </td>
-                  <td class="text-muted sort-ratio" id="ratio_{{ Torrent.hash }}">
+                  <td class="text-muted sort-ratio text-nowrap" id="ratio_{{ Torrent.hash }}">
                     {{ Torrent.ratio }}
                   </td>
-                  <td class="text-muted sort-category">
+                  <td class="text-muted sort-category text-nowrap">
                     {{ Torrent.category }}
                   </td>
-                  <td class="text-muted sort-tags">
+                  <td class="text-muted sort-tags text-nowrap">
                     {{ Torrent.tags }}
                   </td>
-                  <td class="sort-added_on">
+                  <td class="sort-added_on text-nowrap">
                     {{ Torrent.added_on }}
                   </td>
                 </tr>
@@ -97,6 +162,58 @@
     listClass: 'table-tbody',
     valueNames: ['sort-name', 'sort-indexer_name', { name: 'sort-total_size', attr: 'data-total_size' }, 'sort-state', { name: 'sort-seeds', attr: 'data-seeds' }, { name: 'sort-leechs', attr: 'data-leechs' }, { name: 'sort-dlspeed', attr: 'data-dlspeed' }, { name: 'sort-upspeed', attr: 'data-upspeed' }, 'sort-ratio', 'sort-category', 'sort-tags', 'sort-added_on']
   });
+
+  var tmp_html = $(".table-tbody").html()
+
+  function reset_filter() {
+    $(".table-tbody").html(tmp_html);
+    tableDataList.reIndex();
+    select_SelectALL(false, "filter_indexer_name");
+    select_SelectALL(false, "filter_state");
+    select_SelectALL(false, "filter_category");
+    select_SelectALL(false, "filter_tags");
+  }
+
+  function filter_torrents(obj) {
+    $(".table-tbody").html(tmp_html);
+    tableDataList.reIndex();
+    // 按钮状态
+    let btn_obj = $(obj);
+    let status = btn_obj.prop("checked");
+    // 当前项未选中则选中,已选中则取消选中
+    select_SelectALL(false, btn_obj.attr("name"));
+    btn_obj.prop("checked", status);
+
+    // 开始过滤
+    let filter_indexer_name = $("input[name='filter_indexer_name']:checked").val();
+    let filter_state = $("input[name='filter_state']:checked").val();
+    let filter_category = $("input[name='filter_category']:checked").val();
+    let filter_tags = $("input[name='filter_tags']:checked").val();
+
+    tableDataList.filter(function (item) {
+      if (filter_indexer_name) {
+        if (item.values()['sort-indexer_name'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "") != filter_indexer_name) {
+          return false;
+        }
+      }
+      if (filter_state) {
+        if (item.values()['sort-state'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "") != filter_state) {
+          return false;
+        }
+      }
+      if (filter_category) {
+        if (item.values()['sort-category'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "").split(",").indexOf(filter_category) == -1) {
+          return false;
+        }
+      }
+      if (filter_tags) {
+        if (item.values()['sort-tags'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "").split(",").indexOf(filter_tags) == -1) {
+          return false;
+        }
+      }
+      return true;
+    })
+  }
 
   //更新所有种子页面信息
   function get_all_torrents_info() {
