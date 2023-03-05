@@ -82,7 +82,7 @@
       <div class="col-lg-10">
         <div class="card">
           <div class="table-responsive">
-            <table id="table" class="table table-vcenter card-table fs-5">
+            <table id="table-downloaded" class="table table-vcenter card-table fs-5">
               <thead>
                 <tr>
                   <th class="text-nowrap"><button class="table-sort" data-sort="sort-name">名称</button></th>
@@ -157,16 +157,16 @@
 {{ OOPS.nodatafound('没有已完成下载任务', '当前下载器中没有已完成下载的任务。') }}
 {% endif %}
 <script type="text/javascript">
-  var tableDataList = new List('table', {
+  var tableDataList = new List('table-downloaded', {
     sortClass: 'table-sort',
     listClass: 'table-tbody',
     valueNames: ['sort-name', 'sort-indexer_name', { name: 'sort-total_size', attr: 'data-total_size' }, 'sort-state', { name: 'sort-seeds', attr: 'data-seeds' }, { name: 'sort-leechs', attr: 'data-leechs' }, { name: 'sort-dlspeed', attr: 'data-dlspeed' }, { name: 'sort-upspeed', attr: 'data-upspeed' }, 'sort-ratio', 'sort-category', 'sort-tags', 'sort-added_on']
   });
 
-  var tmp_html = $(".table-tbody").html()
+  var tmp_html = $("#table-downloaded > tbody").html()
 
   function reset_filter() {
-    $(".table-tbody").html(tmp_html);
+    $("#table-downloaded > tbody").html(tmp_html);
     tableDataList.reIndex();
     select_SelectALL(false, "filter_indexer_name");
     select_SelectALL(false, "filter_state");
@@ -175,7 +175,7 @@
   }
 
   function filter_torrents(obj) {
-    $(".table-tbody").html(tmp_html);
+    $("#table-downloaded > tbody").html(tmp_html);
     tableDataList.reIndex();
     // 按钮状态
     let btn_obj = $(obj);
