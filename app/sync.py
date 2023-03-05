@@ -324,6 +324,8 @@ class Sync(object):
                         if self.is_dir_path_synced(src_path):
                             log.info("【Sync】%s 全部转移完成" % src_path)
                             self.set_tags_by_dir_path(src_path)
+                        else:
+                            log.info("【Sync】%s 部分转移完成" % src_path)
                 self._need_sync_paths.pop(path)
         finally:
             lock.release()
