@@ -409,7 +409,12 @@ class Sync(object):
                                                                     rmt_mode=sync_mode)
                     if not ret:
                         log.error("【Sync】%s 处理失败：%s" % (monpath, ret_msg))
-
+                    else:
+                        if self.is_dir_path_synced(path):
+                            log.info("【Sync】%s 全部转移完成" % path)
+                            self.set_tags_by_dir_path(path)
+                        else:
+                            log.info("【Sync】%s 部分转移完成" % path)
 
 def run_monitor():
     """
