@@ -131,6 +131,13 @@ class Sync(object):
         file_list = os.listdir(dir_path)
         for file in file_list:
             file_path = os.path.join(dir_path, file)
+            if PathUtils.is_invalid_path(file_path):
+                continue
+            # 不是媒体文件不处理
+            if file.lower() != "index.bdmv":
+                ext = os.path.splitext(file)[-1]
+                if ext.lower() not in RMT_MEDIAEXT:
+                    continue
             if file_path not in self._synced_files:
                 is_synced = False
 
