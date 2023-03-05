@@ -124,25 +124,26 @@ class Sync(object):
         """
         判断目录是否已同步
         """
-        is_synced = True
         if not dir_path:
             return False
         
-        file_list = os.listdir(dir_path)
-        for file in file_list:
-            file_path = os.path.join(dir_path, file)
-            if PathUtils.is_invalid_path(file_path):
-                continue
-            # 不是媒体文件不处理
-            if file.lower() != "index.bdmv":
-                ext = os.path.splitext(file)[-1]
-                if ext.lower() not in RMT_MEDIAEXT:
-                    continue
-            if file_path not in self._synced_files:
-                log.info("【Sync】分析目录 %s 是否已经完整同步时发现 %s 未同步" % (dir_path, file_path))
-                is_synced = False
+        min_filesize = Config().get_config('media').get('min_filesize')
+        now_filesize = self.filetransfer._min_filesize if not str(min_filesize).isdigit() else int(min_filesize) * 1024 * 1024
+        
+        file_list = PathUtils.get_dir_files(in_path=dir_path,
+                                                        episode_format=None,
+                                                        exts=RMT_MEDIAEXT,
+                                                        filesize=now_filesize)
 
-        return is_synced
+        file_list, msg = self.filetransfer.check_ignore(file_list=file_list)
+        if not file_list:
+            return True
+        
+        file_list = list(filter(self.dbhelper.is_transfer_notin_blacklist, file_list))
+        if not file_list:
+            return True
+
+        return False
     
     def set_tags_by_dir_path(self, dir_path):
         """
@@ -160,7 +161,7 @@ class Sync(object):
         # 设置标签
         for task in task_data:
             Downloader().default_client.set_torrents_status(task.get("hash"), tags=task.get("tags"))
-            log.info("【Sync】下载任务 %s %s 设置标签：已整理" % (task.get("hash"), dir_path))
+            log.info("【Sync】下载任务 %s - %s 设置标签：已整理" % (task.get("hash"), dir_path))
 
     def file_change_handler(self, event, text, event_path):
         """
