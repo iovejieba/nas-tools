@@ -202,12 +202,12 @@
         }
       }
       if (filter_category) {
-        if (item.values()['sort-category'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "").split(",").indexOf(filter_category) == -1) {
+        if (item.values()['sort-category'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "").split(", ").indexOf(filter_category) == -1) {
           return false;
         }
       }
       if (filter_tags) {
-        if (item.values()['sort-tags'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "").split(",").indexOf(filter_tags) == -1) {
+        if (item.values()['sort-tags'].replace(/^\s+|\s+$/g, "").replace(/[\r\n]/g, "").split(", ").indexOf(filter_tags) == -1) {
           return false;
         }
       }
