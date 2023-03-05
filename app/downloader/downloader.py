@@ -349,6 +349,22 @@ class Downloader:
             finally:
                 lock.release()
 
+    def get_task_by_dir_name(self, dir_name):
+        """
+        根据目录名称查询下载任务
+        :param dir_name: 目录名称
+        :return: 下载任务信息
+        """
+        if not self.default_client:
+            return None
+        completed_torrents = self.default_client.get_completed_torrents()
+        task_data = []
+        for torrent in completed_torrents:
+            if dir_name in torrent.get("content_path"):
+                task_data.append(torrent)
+
+        return task_data
+
     def get_remove_torrents(self, downloader=None, config=None):
         """
         查询符合删种策略的种子信息

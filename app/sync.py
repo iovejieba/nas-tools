@@ -5,6 +5,7 @@ import traceback
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 from watchdog.observers.polling import PollingObserver
+from app.downloader import Downloader
 
 import log
 from app.conf import ModuleConf
@@ -118,6 +119,24 @@ class Sync(object):
         if not self.sync_dir_config:
             return []
         return [os.path.normpath(key) for key in self.sync_dir_config.keys()]
+    
+    def set_tags_by_dir_path(self, dir_path):
+        """
+        根据文件夹名称，找到对应的下载任务，并设置标签
+        """
+        if not dir_path:
+            return
+        dir_name = os.path.basename(dir_path)
+        if not dir_name:
+            return
+        # 根据文件夹名称，找到对应的下载任务
+        task_data = Downloader().get_task_by_dir_name(dir_name)
+        if not task_data:
+            return
+        # 设置标签
+        for task in task_data:
+            Downloader().default_client.set_torrents_status(task.get("hash"), tags=task.get("tags"))
+            log.info("【Sync】下载任务 %s 设置标签：%s" % (task.get("hash"), task.get("tags")))
 
     def file_change_handler(self, event, text, event_path):
         """
@@ -217,6 +236,8 @@ class Sync(object):
                                                                         rmt_mode=sync_mode)
                         if not ret:
                             log.warn("【Sync】%s 转移失败：%s" % (event_path, ret_msg))
+                        else:
+                            self.set_tags_by_dir_path(event_path)
                     else:
                         try:
                             lock.acquire()
