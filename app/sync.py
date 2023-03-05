@@ -136,7 +136,7 @@ class Sync(object):
         # 设置标签
         for task in task_data:
             Downloader().default_client.set_torrents_status(task.get("hash"), tags=task.get("tags"))
-            log.info("【Sync】下载任务 %s 设置标签：%s" % (task.get("hash"), task.get("tags")))
+            log.info("【Sync】下载任务 %s %s 设置标签：已整理" % (task.get("hash"), dir_path))
 
     def file_change_handler(self, event, text, event_path):
         """
