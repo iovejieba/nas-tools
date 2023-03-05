@@ -237,6 +237,7 @@ class Sync(object):
                         if not ret:
                             log.warn("【Sync】%s 转移失败：%s" % (event_path, ret_msg))
                         else:
+                            log.info("【Sync】%s 转移完成" % event_path)
                             self.set_tags_by_dir_path(event_path)
                     else:
                         try:
