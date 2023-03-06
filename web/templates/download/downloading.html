@@ -124,18 +124,21 @@
 
   function remove_pt_download(id) {
     ajax_post("pt_remove", { "id": id }, function (ret) {
+      clearTimeout(timeout);
       window_history_refresh();
     });
   }
 
   function change_pt_download(id) {
     ajax_post("pt_change_download", { "id": id }, function (ret) {
+      clearTimeout(timeout);
       window_history_refresh();
     });
   }
 
   function change_pt_brushtask(id) {
     ajax_post("pt_change_brushtask", { "id": id }, function (ret) {
+      clearTimeout(timeout);
       window_history_refresh();
     });
   }
@@ -154,7 +157,7 @@
         for (let torrent of ret.torrents) {
           update_torrent_ui(torrent);
         }
-        setTimeout("get_all_torrents_info()", 2000);
+        timeout = setTimeout("get_all_torrents_info()", 2000);
       }
     }, true, false);
   }
@@ -205,6 +208,7 @@
         if (ret.code == 0) {
           torrent_dropzone.removeAllFiles();
           $("#torrent_magnets").val("");
+          clearTimeout(timeout);
           window_history_refresh();
         } else {
           show_fail_modal(`添加下载失败：${ret.msg}`, function () {
@@ -216,6 +220,6 @@
   }
 
   //事件
-  setTimeout("get_all_torrents_info()", 2000);
+  var timeout = setTimeout("get_all_torrents_info()", 2000);
 
 </script>
