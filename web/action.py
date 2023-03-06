@@ -652,7 +652,7 @@ class WebAction:
         """
         查询已经完成的下载任务
         """
-        client_type, torrents = Downloader().get_torrents()
+        client_type, torrents = Downloader().get_torrents(sort="added_on", reverse=True, status=["seeding", "completed"])
         
         torrents_data = []
         total_upspeed = 0
@@ -3832,7 +3832,7 @@ class WebAction:
             if not media_info:
                 torrent.update({
                     "title": name,
-                    "image": ""
+                    "image": "../static/img/splash/apple-splash-640-1136.png"
                 })
                 continue
             if not media_info.tmdb_info:
@@ -3850,7 +3850,7 @@ class WebAction:
 
             torrent.update({
                 "title": title,
-                "image": poster_path or "",
+                "image": poster_path or "../static/img/splash/apple-splash-640-1136.png",
                 "indexer_name": indexer_name
             })
         return {"code": 0, "result": torrents}
@@ -3868,7 +3868,7 @@ class WebAction:
         """
         查询已经完成的下载任务
         """
-        client_type, torrents = Downloader().get_torrents(sort="added_on", reverse=True, status="seeding")
+        client_type, torrents = Downloader().get_torrents(sort="added_on", reverse=True, status=["seeding", "completed"])
 
         indexers = Indexer().get_builtin_indexers(check=False)
         for torrent in torrents:

@@ -81,7 +81,7 @@
       </div>
       <div class="col-lg-10">
         <div class="card">
-          <div class="table-responsive">
+          <div class="table-responsive min-vh-100">
             <table id="table-downloaded" class="table table-vcenter card-table fs-5">
               <thead>
                 <tr>
@@ -97,6 +97,7 @@
                   <th class="text-nowrap"><button class="table-sort" data-sort="sort-category">分类</button></th>
                   <th class="text-nowrap"><button class="table-sort" data-sort="sort-tags">标签</button></th>
                   <th class="text-nowrap"><button class="table-sort" data-sort="sort-added_on">添加时间</button></th>
+                  <th class="text-nowrap">操作</th>
                 </tr>
               </thead>
               <tbody class="table-tbody">
@@ -143,6 +144,22 @@
                   <td class="sort-added_on text-nowrap">
                     {{ Torrent.added_on }}
                   </td>
+                  <td class="text-nowrap">
+                    <div class="dropdown">
+                      <a href="#" class="btn-action" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ SVG.dots_vertical() }}
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        {% if Client != 'client115' %}
+                        <a href="javascript:start_pt_download('{{ Torrent.hash }}')" id="start_btn_{{ Torrent.hash }}"
+                          class="dropdown-item" style="{% if Torrent.state == '做种' %}display:none{% endif %}">开始</a>
+                        <a href="javascript:stop_pt_download('{{ Torrent.hash }}')" id="stop_btn_{{ Torrent.hash }}"
+                          class="dropdown-item" style="{% if Torrent.state == '暂停' %}display:none{% endif %}">暂停</a>
+                        {% endif %}
+                        <a href="javascript:remove_pt_download('{{ Torrent.hash }}')" class="dropdown-item text-danger">删除</a>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -157,6 +174,24 @@
 {{ OOPS.nodatafound('没有已完成下载任务', '当前下载器中没有已完成下载的任务。') }}
 {% endif %}
 <script type="text/javascript">
+  function remove_pt_download(id) {
+    ajax_post("pt_remove", { "id": id }, function (ret) {
+      setTimeout("window_history_refresh()", 2000);
+    });
+  }
+  
+  function start_pt_download(id) {
+    ajax_post("pt_start", { "id": id }, function (ret) {
+      setTimeout("window_history_refresh()", 2000);
+    });
+  }
+
+  function stop_pt_download(id) {
+    ajax_post("pt_stop", { "id": id }, function (ret) {
+      setTimeout("window_history_refresh()", 2000);
+    });
+  }
+
   var tableDataList = new List('table-downloaded', {
     sortClass: 'table-sort',
     listClass: 'table-tbody',
@@ -212,7 +247,7 @@
         }
       }
       return true;
-    })
+    });
   }
 
   //更新所有种子页面信息
