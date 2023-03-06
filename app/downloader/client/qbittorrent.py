@@ -418,8 +418,13 @@ class Qbittorrent(_IDownloadClient):
             ExceptionUtils.exception_traceback(err)
             return False
 
-    def set_torrent_tag(self, **kwargs):
-        pass
+    def set_torrent_tag(self, ids, tags=None):
+        torrents = self.get_torrents(ids=ids)[0]
+        if len(torrents) > 0:
+            torrent_info = torrents[0]
+            old_tags = torrent_info.get("tags")
+            self.qbc.torrents_remove_tags(torrent_hashes=ids, tags=old_tags)
+            self.qbc.torrents_add_tags(torrent_hashes=ids, tags=tags)
 
     def get_download_dirs(self):
         if not self.qbc:
@@ -513,3 +518,14 @@ class Qbittorrent(_IDownloadClient):
                 'progress': progress
             })
         return DispTorrents
+
+    def set_torrents_savePath(self, ids, save_path):
+        """
+        设置种子保存路径
+        """
+        if not self.qbc:
+            return
+        if not ids or not save_path:
+            return
+        
+        self.qbc.torrents_setSavePath(torrent_hashes=ids, save_path=save_path)

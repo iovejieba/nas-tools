@@ -103,6 +103,9 @@ class Client115(_IDownloadClient):
     def stop_torrents(self, ids):
         pass
 
+    def set_torrent_tag(self, **kwargs):
+        pass
+
     def set_torrents_status(self, ids, **kwargs):
         return self.delete_torrents(ids=ids, delete_file=False)
 
@@ -133,3 +136,6 @@ class Client115(_IDownloadClient):
                 'progress': progress
             })
         return DispTorrents
+
+    def set_torrents_savePath(self, ids, save_path):
+        pass

@@ -497,3 +497,14 @@ class Transmission(_IDownloadClient):
                 'progress': progress
             })
         return DispTorrents
+
+    def set_torrents_savePath(self, ids, save_path):
+        """
+        设置种子保存路径
+        """
+        if not self.trc:
+            return
+        if not ids or not save_path:
+            return
+        
+        self.trc.change_torrent(ids, location=save_path)

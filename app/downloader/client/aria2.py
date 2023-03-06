@@ -124,6 +124,9 @@ class Aria2(_IDownloadClient):
             return False
         return self._client.pause(gid=ids)
 
+    def set_torrent_tag(self, **kwargs):
+        pass
+
     def delete_torrents(self, delete_file, ids):
         if not self._client:
             return False
@@ -159,3 +162,7 @@ class Aria2(_IDownloadClient):
                 'progress': progress
             })
         return DispTorrents
+
+    def set_torrents_savePath(self, ids, save_path):
+        pass
+    

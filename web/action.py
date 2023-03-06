@@ -63,6 +63,8 @@ class WebAction:
             "pt_start": self.__pt_start,
             "pt_stop": self.__pt_stop,
             "pt_remove": self.__pt_remove,
+            "pt_change_download": self.__pt_change_download,
+            "pt_change_brushtask": self.__pt_change_brushtask,
             "pt_info": self.__pt_info,
             "all_pt_info": self.__all_pt_info,
             "del_unknown_path": self.__del_unknown_path,
@@ -598,6 +600,43 @@ class WebAction:
         tid = data.get("id")
         if id:
             Downloader().delete_torrents(ids=tid, delete_file=True)
+        return {"retcode": 0, "id": tid}
+
+    @staticmethod
+    def __pt_change_download(data):
+        """
+        修改下载目录
+        """
+        tid = data.get("id")
+
+        # 获取默认下载目录
+        dl_dir = Downloader().get_download_dirs()
+        if len(dl_dir) > 0:
+            dl_dir = dl_dir[0]
+        else:
+            dl_dir = None
+
+        if tid and dl_dir:
+            Downloader().default_client.set_torrents_savePath(ids=tid, save_path=dl_dir)
+            Downloader().default_client.set_torrent_tag(ids=tid, tags="NASTOOL")
+
+        return {"retcode": 0, "id": tid}
+
+    @staticmethod
+    def __pt_change_brushtask(data):
+        """
+        修改下载目录
+        """
+        tid = data.get("id")
+
+        # 获取默认刷流目录
+        dl_dir = BrushTask().get_downloader_info()
+        if len(dl_dir) > 0:
+            dl_dir = dl_dir[0]['save_dir']
+            if tid and dl_dir:
+                Downloader().default_client.set_torrents_savePath(ids=tid, save_path=dl_dir)
+                Downloader().default_client.set_torrent_tag(ids=tid, tags="已整理")
+            
         return {"retcode": 0, "id": tid}
 
     @staticmethod

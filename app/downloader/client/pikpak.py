@@ -119,6 +119,9 @@ class PikPak(_IDownloadClient):
     def stop_torrents(self, ids):
         pass
 
+    def set_torrent_tag(self, **kwargs):
+        pass
+
     # 需要完成
     def set_torrents_status(self, ids, **kwargs):
         pass
@@ -145,3 +148,6 @@ class PikPak(_IDownloadClient):
                 'noprogress': True
             })
         return DispTorrents
+
+    def set_torrents_savePath(self, ids, save_path):
+        pass

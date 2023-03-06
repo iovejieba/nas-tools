@@ -86,6 +86,12 @@
                   <a href="javascript:stop_pt_download('{{ Torrent.id }}')" id="stop_btn_{{ Torrent.id }}"
                     class="dropdown-item" style="{% if Torrent.state == 'Stoped' %}display:none{% endif %}">暂停</a>
                   {% endif %}
+                  {% if Client == 'qbittorrent' or Client == 'transmission' %}
+                  <a href="javascript:change_pt_download('{{ Torrent.id }}')" id="change_download_btn_{{ Torrent.id }}"
+                    class="dropdown-item" style="{% if not Torrent.is_brushtask %}display:none{% endif %}">转为下载</a>
+                    <a href="javascript:change_pt_brushtask('{{ Torrent.id }}')" id="change_brushtask_btn_{{ Torrent.id }}"
+                    class="dropdown-item" style="{% if Torrent.is_brushtask %}display:none{% endif %}">转为刷流</a>
+                  {% endif %}
                   <a href="javascript:remove_pt_download('{{ Torrent.id }}')" class="dropdown-item text-danger">删除</a>
                 </div>
                 {% endif %}
@@ -118,6 +124,18 @@
 
   function remove_pt_download(id) {
     ajax_post("pt_remove", { "id": id }, function (ret) {
+      window_history_refresh();
+    });
+  }
+
+  function change_pt_download(id) {
+    ajax_post("pt_change_download", { "id": id }, function (ret) {
+      window_history_refresh();
+    });
+  }
+
+  function change_pt_brushtask(id) {
+    ajax_post("pt_change_brushtask", { "id": id }, function (ret) {
       window_history_refresh();
     });
   }

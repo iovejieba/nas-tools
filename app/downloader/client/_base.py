@@ -143,3 +143,10 @@ class _IDownloadClient(metaclass=ABCMeta):
         获取下载进度
         """
         pass
+
+    @abstractmethod
+    def set_torrents_savePath(self, ids, save_path):
+        """
+        修改下载路径
+        """
+        pass
