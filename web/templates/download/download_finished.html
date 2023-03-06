@@ -102,8 +102,8 @@
               <tbody class="table-tbody">
                 {% for Torrent in Torrents %}
                 <tr>
-                  <td class="sort-name text-nowrap">
-                    {{ Torrent.name }}
+                  <td class="sort-name text-nowrap" style="width:350px">
+                    <div class="text-truncate overflow-hidden" style="width: 300px">{{ Torrent.name }}</div>
                   </td>
                   <td class="text-muted sort-indexer_name text-nowrap">
                     {{ Torrent.indexer_name}}
