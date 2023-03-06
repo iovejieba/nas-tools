@@ -2312,6 +2312,10 @@
     $(window).unbind('scroll');
     page = page.replaceAll(" ", "%20");
     NProgress.start();
+    // 清理定时器
+    for (let i = 0; i < 100; i++) {
+      clearTimeout(i);
+    }
     $("#page_content").load(page, {}, function (response, status, xhr) {
       NProgress.done();
       if ($("#page_content").find("title").first().text() === "登录 - NAStool") {
