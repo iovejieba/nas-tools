@@ -13,7 +13,73 @@
 <!-- 业务页面代码 -->
 <div class="page-body">
   <div class="container-xl">
-    <div class="d-grid gap-3 grid-media-card" id="recommend_content">
+    <div class="col-md-12">
+      <div class="row">
+        {% if Categorys %}
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label class="form-label">类型</label>
+            <select class="form-select" id="category" onchange="change_selecter()">
+              {% for item in Categorys %}
+              <option value="{{ item.value }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endif %}
+        {% if Areas %}
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label class="form-label">地区</label>
+            <select class="form-select" id="area" onchange="change_selecter()">
+              {% for item in Areas %}
+              <option value="{{ item.value }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endif %}
+        {% if Years %}
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label class="form-label">年代</label>
+            <select class="form-select" id="year" onchange="change_selecter()">
+              {% for item in Years %}
+              <option value="{{ item.value }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endif %}
+        {% if Tags %}
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label class="form-label">标签</label>
+            <select class="form-select" id="tag" onchange="change_selecter()">
+              {% for item in Tags %}
+              <option value="{{ item.value }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endif %}
+        {% if Sorts %}
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label class="form-label">排序</label>
+            <select class="form-select" id="sort" onchange="change_selecter()">
+              {% for item in Sorts %}
+              <option value="{{ item.value }}">{{ item.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="d-grid gap-3 grid-media-card" id="recommend_content">
+      </div>
     </div>
   </div>
 </div>
@@ -66,9 +132,17 @@
 
   // 移除占位卡片
   function del_loading_card_placeholder() {
-    $("div[id^='loading_card_placeholder_']").each(function(){
+    $("div[id^='loading_card_placeholder_']").each(function () {
       $(this).remove();
     })
+  }
+
+  // 更改筛选
+  function change_selecter() {
+    CurrentPage = 1;
+    sessionStorage.CurrentPage = CurrentPage;
+    $("#recommend_content").empty();
+    loading_data();
   }
 
 
@@ -80,6 +154,11 @@
     }
     loading = true;
     add_loading_card_placeholder();
+    let category = $("#category").val();
+    let area = $("#area").val();
+    let year = $("#year").val();
+    let tag = $("#tag").val();
+    let sort = $("#sort").val();
     ajax_post("get_recommend", {
       "type": Type,
       "subtype": SubType,
@@ -88,7 +167,12 @@
       "tmdbid": TmdbId,
       "personid": PersonId,
       "keyword": Keyword,
-      "source": Source
+      "source": Source,
+      "category": category,
+      "area": area,
+      "year": year,
+      "tag": tag,
+      "sort": sort
     }, function (ret) {
       if (ret.Items.length > 0) {
         // 记录页码
@@ -152,8 +236,8 @@
 
   // 滚动加载事件
   $(document).ready(function ($) {
-    $(window).scroll(function(){
-      if(getScrollRate() < 0.01){
+    $(window).scroll(function () {
+      if (getScrollRate() < 0.01) {
         loading_data();
       }
     });

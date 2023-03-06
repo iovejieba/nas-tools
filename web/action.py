@@ -2526,19 +2526,53 @@ class WebAction:
             mtype = MediaType.MOVIE if SubType in self._MovieTypes else MediaType.TV
             # 过滤参数 with_genres with_original_language
             params = data.get("filter_params")
+            if not params:
+                params = {}
+
+            # 排序
+            sort = data.get("sort") or None
+            # 分类
+            category = data.get("category") or None
+            if sort and sort != "A":
+                params.update({"sort_by": sort})
+            if category and category != "全部":
+                params.update({"with_genres": category})
+
+            if not params:
+                params = None
+
             res_list = Media().get_tmdb_discover(mtype=mtype, page=CurrentPage, params=params)
         elif Type == "DOUBANTAG":
             # 豆瓣发现
             mtype = MediaType.MOVIE if SubType in self._MovieTypes else MediaType.TV
-            # 参数
-            # params = data.get("filter_params") or {}
             # 排序
-            # sort = params.get("sort") or "U"
-            # 选中的分类
-            # selected_categories = json.dumps(params.get("selected_categories") or {})
+            sort = data.get("sort") or None
+            # 分类
+            category = data.get("category") or None
+            # 标签
+            tag = data.get("tag") or None
+            # 年份
+            year = data.get("year") or None
+            # 地区
+            area = data.get("area") or None
+            # 组合过滤条件
+            search_tag = []
+            if category and category != "全部":
+                search_tag.append(category)
+            if tag and tag != "全部":
+                search_tag.append(tag)
+            if year and year != "全部":
+                search_tag.append(year)
+            if area and area != "全部":
+                search_tag.append(area)
+            if len(search_tag) > 0:
+                search_tag = ",".join(search_tag)
+            else:
+                search_tag = ''
+
             # 过滤参数
             res_list = DouBan().get_douban_disover(mtype=mtype,
-                                                   page=CurrentPage)
+                                                   page=CurrentPage, sort=sort, tags=search_tag)
 
         # 补充存在与订阅状态
         filetransfer = FileTransfer()

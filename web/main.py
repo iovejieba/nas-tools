@@ -427,9 +427,106 @@ def ranking():
 @App.route('/douban_movie', methods=['POST', 'GET'])
 @login_required
 def douban_movie():
+    categorys = [
+        {"name": "全部", "value": "全部"},
+        {"name": "喜剧", "value": "喜剧"},
+        {"name": "动作", "value": "动作"},
+        {"name": "爱情", "value": "爱情"},
+        {"name": "科幻", "value": "科幻"},
+        {"name": "悬疑", "value": "悬疑"},
+        {"name": "恐怖", "value": "恐怖"},
+        {"name": "犯罪", "value": "犯罪"},
+        {"name": "动画", "value": "动画"},
+        {"name": "惊悚", "value": "惊悚"},
+        {"name": "冒险", "value": "冒险"},
+        {"name": "奇幻", "value": "奇幻"},
+        {"name": "历史", "value": "历史"},
+        {"name": "音乐", "value": "音乐"},
+        {"name": "歌舞", "value": "歌舞"},
+        {"name": "战争", "value": "战争"},
+        {"name": "西部", "value": "西部"},
+        {"name": "传记", "value": "传记"},
+        {"name": "武侠", "value": "武侠"},
+        {"name": "情色", "value": "情色"},
+        {"name": "灾难", "value": "灾难"},
+        {"name": "纪录片", "value": "纪录片"},
+        {"name": "短片", "value": "短片"}
+    ]
+    areas = [
+        {"name": "全部", "value": "全部"},
+        {"name": "华语", "value": "华语"},
+        {"name": "中国大陆", "value": "中国大陆"},
+        {"name": "中国香港", "value": "中国香港"},
+        {"name": "中国台湾", "value": "中国台湾"},
+        {"name": "欧美", "value": "欧美"},
+        {"name": "美国", "value": "美国"},
+        {"name": "日本", "value": "日本"},
+        {"name": "韩国", "value": "韩国"},
+        {"name": "英国", "value": "英国"},
+        {"name": "法国", "value": "法国"},
+        {"name": "德国", "value": "德国"},
+        {"name": "意大利", "value": "意大利"},
+        {"name": "西班牙", "value": "西班牙"},
+        {"name": "印度", "value": "印度"},
+        {"name": "泰国", "value": "泰国"},
+        {"name": "俄罗斯", "value": "俄罗斯"},
+        {"name": "加拿大", "value": "加拿大"},
+        {"name": "澳大利亚", "value": "澳大利亚"},
+        {"name": "爱尔兰", "value": "爱尔兰"},
+        {"name": "瑞典", "value": "瑞典"},
+        {"name": "巴西", "value": "巴西"},
+        {"name": "丹麦", "value": "丹麦"}
+    ]
+    years = [
+        {"name": "全部", "value": "全部"},
+        {"name": "2023", "value": "2023"},
+        {"name": "2022", "value": "2022"},
+        {"name": "2021", "value": "2021"},
+        {"name": "2020", "value": "2020"},
+        {"name": "2019", "value": "2019"},
+        {"name": "2018", "value": "2018"},
+        {"name": "2017", "value": "2017"},
+        {"name": "2016", "value": "2016"},
+        {"name": "2015", "value": "2015"},
+        {"name": "2014", "value": "2014"},
+        {"name": "2013", "value": "2013"},
+        {"name": "2012", "value": "2012"},
+        {"name": "2011", "value": "2011"},
+        {"name": "2010", "value": "2010"},
+        {"name": "2000年代", "value": "2000年代"},
+        {"name": "90年代", "value": "90年代"},
+        {"name": "80年代", "value": "80年代"},
+        {"name": "70年代", "value": "70年代"},
+        {"name": "60年代", "value": "60年代"},
+        {"name": "更早", "value": "更早"}
+    ]
+    tags = [
+        {"name": "全部", "value": "全部"},
+        {"name": "黑色幽默", "value": "黑色幽默"},
+        {"name": "黑色电影", "value": "黑色电影"},
+        {"name": "校园", "value": "校园"},
+        {"name": "小说改编", "value": "小说改编"},
+        {"name": "温情", "value": "温情"},
+        {"name": "伦理", "value": "伦理"},
+        {"name": "西部冒险", "value": "西部冒险"},
+        {"name": "心理", "value": "心理"},
+        {"name": "搞笑", "value": "搞笑"},
+        {"name": "艺术", "value": "艺术"}
+    ]
+    sorts = [
+        {"name": "综合排序", "value": ""},
+        {"name": "评分最高", "value": "S"},
+        {"name": "近期热度", "value": "T"},
+        {"name": "最新上映", "value": "R"}
+    ]
     return render_template("discovery/recommend.html",
                            Type="DOUBANTAG",
                            SubType="MOV",
+                           Categorys=categorys,
+                           Areas=areas,
+                           Years=years,
+                           Tags=tags,
+                           Sorts=sorts,
                            Title="豆瓣电影")
 
 
@@ -437,17 +534,147 @@ def douban_movie():
 @App.route('/douban_tv', methods=['POST', 'GET'])
 @login_required
 def douban_tv():
+    categorys = [
+        {"name": "全部", "value": "全部"},
+        {"name": "全部剧集", "value": "全部剧集"},
+        {"name": "全部综艺", "value": "全部综艺"},
+        {"name": "喜剧", "value": "喜剧"},
+        {"name": "爱情", "value": "爱情"},
+        {"name": "科幻", "value": "科幻"},
+        {"name": "动作", "value": "动作"},
+        {"name": "悬疑", "value": "悬疑"},
+        {"name": "恐怖", "value": "恐怖"},
+        {"name": "动画", "value": "动画"},
+        {"name": "剧情", "value": "剧情"},
+        {"name": "武侠", "value": "武侠"},
+        {"name": "古装", "value": "古装"},
+        {"name": "战争", "value": "战争"},
+        {"name": "家庭", "value": "家庭"},
+        {"name": "犯罪", "value": "犯罪"},
+        {"name": "奇幻", "value": "奇幻"},
+        {"name": "冒险", "value": "冒险"},
+        {"name": "历史", "value": "历史"},
+        {"name": "传记", "value": "传记"},
+        {"name": "惊悚", "value": "惊悚"},
+        {"name": "灾难", "value": "灾难"},
+        {"name": "音乐", "value": "音乐"},
+        {"name": "歌舞", "value": "歌舞"},
+        {"name": "真人秀", "value": "真人秀"},
+        {"name": "脱口秀", "value": "脱口秀"}
+    ]
+    areas = [
+        {"name": "全部", "value": "全部"},
+        {"name": "华语", "value": "华语"},
+        {"name": "中国大陆", "value": "中国大陆"},
+        {"name": "中国香港", "value": "中国香港"},
+        {"name": "中国台湾", "value": "中国台湾"},
+        {"name": "欧美", "value": "欧美"},
+        {"name": "美国", "value": "美国"},
+        {"name": "日本", "value": "日本"},
+        {"name": "韩国", "value": "韩国"},
+        {"name": "英国", "value": "英国"},
+        {"name": "法国", "value": "法国"},
+        {"name": "德国", "value": "德国"},
+        {"name": "意大利", "value": "意大利"},
+        {"name": "西班牙", "value": "西班牙"},
+        {"name": "印度", "value": "印度"},
+        {"name": "泰国", "value": "泰国"},
+        {"name": "俄罗斯", "value": "俄罗斯"},
+        {"name": "加拿大", "value": "加拿大"},
+        {"name": "澳大利亚", "value": "澳大利亚"},
+        {"name": "爱尔兰", "value": "爱尔兰"},
+        {"name": "瑞典", "value": "瑞典"},
+        {"name": "巴西", "value": "巴西"},
+        {"name": "丹麦", "value": "丹麦"}
+    ]
+    years = [
+        {"name": "全部", "value": "全部"},
+        {"name": "2023", "value": "2023"},
+        {"name": "2022", "value": "2022"},
+        {"name": "2021", "value": "2021"},
+        {"name": "2020", "value": "2020"},
+        {"name": "2019", "value": "2019"},
+        {"name": "2018", "value": "2018"},
+        {"name": "2017", "value": "2017"},
+        {"name": "2016", "value": "2016"},
+        {"name": "2015", "value": "2015"},
+        {"name": "2014", "value": "2014"},
+        {"name": "2013", "value": "2013"},
+        {"name": "2012", "value": "2012"},
+        {"name": "2011", "value": "2011"},
+        {"name": "2010", "value": "2010"},
+        {"name": "2000年代", "value": "2000年代"},
+        {"name": "90年代", "value": "90年代"},
+        {"name": "80年代", "value": "80年代"},
+        {"name": "70年代", "value": "70年代"},
+        {"name": "60年代", "value": "60年代"},
+        {"name": "更早", "value": "更早"}
+    ]
+    tags = [
+        {"name": "全部", "value": "全部"},
+        {"name": "青春", "value": "青春"},
+        {"name": "音乐", "value": "音乐"},
+        {"name": "喜剧", "value": "喜剧"},
+        {"name": "美剧", "value": "美剧"},
+        {"name": "动画", "value": "动画"},
+        {"name": "校园", "value": "校园"},
+        {"name": "剧情", "value": "剧情"},
+        {"name": "爱情", "value": "爱情"}
+    ]
+    sorts = [
+        {"name": "综合排序", "value": "A"},
+        {"name": "评分最高", "value": "S"},
+        {"name": "近期热度", "value": "T"},
+        {"name": "最新上映", "value": "R"}
+    ]
     return render_template("discovery/recommend.html",
                            Type="DOUBANTAG",
                            SubType="TV",
+                           Categorys=categorys,
+                           Areas=areas,
+                           Years=years,
+                           Tags=tags,
+                           Sorts=sorts,
                            Title="豆瓣电视剧")
 
 
 @App.route('/tmdb_movie', methods=['POST', 'GET'])
 @login_required
 def tmdb_movie():
+    categorys = [
+        {"name": "全部", "value": "全部"},
+        {"name": "动作", "value": "28"},
+        {"name": "冒险", "value": "12"},
+        {"name": "科幻", "value": "878"},
+        {"name": "动画", "value": "16"},
+        {"name": "剧情", "value": "18"},
+        {"name": "喜剧", "value": "35"},
+        {"name": "犯罪", "value": "80"},
+        {"name": "恐怖", "value": "27"},
+        {"name": "奇幻", "value": "14"},
+        {"name": "家庭", "value": "10751"},
+        {"name": "战争", "value": "10752"},
+        {"name": "西部", "value": "37"},
+        {"name": "历史", "value": "36"},
+        {"name": "纪录", "value": "99"},
+        {"name": "音乐", "value": "10402"},
+        {"name": "电视电影", "value": "10770"},
+        {"name": "爱情", "value": "10749"},
+        {"name": "惊悚", "value": "53"},
+        {"name": "悬疑", "value": "9648"}
+    ]
+
+    sorts = [
+        {"name": "综合排序", "value": "A"},
+        {"name": "热度最高", "value": "popularity.desc"},
+        {"name": "评分最高", "value": "vote_average.desc"},
+        {"name": "最新上映", "value": "primary_release_date.desc"}
+    ]
+
     return render_template("discovery/recommend.html",
                            Type="DISCOVER",
+                           Categorys=categorys,
+                           Sorts=sorts,
                            SubType="MOV",
                            Title="TMDB电影")
 
@@ -455,9 +682,37 @@ def tmdb_movie():
 @App.route('/tmdb_tv', methods=['POST', 'GET'])
 @login_required
 def tmdb_tv():
+    categorys = [
+        {"name": "全部", "value": "全部"},
+        {"name": "Sci-Fi &amp; Fantasy", "value": "10765"},
+        {"name": "War &amp; Politics", "value": "10768"},
+        {"name": "儿童", "value": "10762"},
+        {"name": "剧情", "value": "18"},
+        {"name": "动作冒险", "value": "10759"},
+        {"name": "动画", "value": "16"},
+        {"name": "喜剧", "value": "35"},
+        {"name": "犯罪", "value": "80"},
+        {"name": "家庭", "value": "10751"},
+        {"name": "真人秀", "value": "10764"},
+        {"name": "悬疑", "value": "9648"},
+        {"name": "新闻", "value": "10763"},
+        {"name": "纪录", "value": "99"},
+        {"name": "肥皂剧", "value": "10766"},
+        {"name": "脱口秀", "value": "10767"},
+        {"name": "西部", "value": "37"}
+    ]
+
+    sorts = [
+        {"name": "综合排序", "value": "A"},
+        {"name": "热度最高", "value": "popularity.desc"},
+        {"name": "评分最高", "value": "vote_average.desc"},
+        {"name": "最新上映", "value": "primary_release_date.desc"}
+    ]
     return render_template("discovery/recommend.html",
                            Type="DISCOVER",
                            SubType="TV",
+                           Categorys=categorys,
+                           Sorts=sorts,
                            Title="TMDB电视剧")
 
 

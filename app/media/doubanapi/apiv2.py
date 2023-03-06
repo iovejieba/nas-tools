@@ -163,6 +163,10 @@ class DoubanApi(object):
         if kwargs:
             params.update(kwargs)
 
+        if 'sort' in params:
+            if params.get('sort') == None or params.get('sort') == 'A':
+                params.pop('sort')
+
         ts = params.pop('_ts', int(datetime.strftime(datetime.now(), '%Y%m%d')))
         params.update({'os_rom': 'android', 'apiKey': cls._api_key, '_ts': ts, '_sig': cls.__sign(url=req_url, ts=ts)})
 
