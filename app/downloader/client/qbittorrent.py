@@ -217,7 +217,7 @@ class Qbittorrent(_IDownloadClient):
                 continue
             if savepath_key and not re.findall(savepath_key, torrent.save_path, re.I):
                 continue
-            if tracker_key and not re.findall(tracker_key, torrent.tracker, re.I):
+            if (tracker_key and not re.findall(tracker_key, torrent.tracker, re.I)) or not torrent.tracker:
                 continue
             if qb_state and torrent.state not in qb_state:
                 continue
