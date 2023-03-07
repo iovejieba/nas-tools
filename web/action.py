@@ -2546,7 +2546,7 @@ class WebAction:
             # 豆瓣发现
             mtype = MediaType.MOVIE if SubType in self._MovieTypes else MediaType.TV
             # 排序
-            sort = data.get("sort") or None
+            sort = data.get("sort") or 'T'
             # 分类
             category = data.get("category") or None
             # 标签
