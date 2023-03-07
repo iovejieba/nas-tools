@@ -514,9 +514,8 @@ def douban_movie():
         {"name": "艺术", "value": "艺术"}
     ]
     sorts = [
-        {"name": "综合排序", "value": ""},
-        {"name": "评分最高", "value": "S"},
         {"name": "近期热度", "value": "T"},
+        {"name": "评分最高", "value": "S"},
         {"name": "最新上映", "value": "R"}
     ]
     return render_template("discovery/recommend.html",
@@ -622,9 +621,8 @@ def douban_tv():
         {"name": "爱情", "value": "爱情"}
     ]
     sorts = [
-        {"name": "综合排序", "value": "A"},
-        {"name": "评分最高", "value": "S"},
         {"name": "近期热度", "value": "T"},
+        {"name": "评分最高", "value": "S"},
         {"name": "最新上映", "value": "R"}
     ]
     return render_template("discovery/recommend.html",
